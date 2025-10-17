@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Old File
+cutout_2d.py
+
+# Large Data
+CATALOGUES
+CUTOUTS
+IMAGES
+PLOTS
