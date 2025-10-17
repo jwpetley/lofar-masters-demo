@@ -10,3 +10,15 @@ dependencies = [
     "scipy>=1.16.2",
     "tqdm>=4.67.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.0.1",
+    "ty>=0.0.1a23",
+]
+
+
+[tool.ty.rules]
+unresolved-attribute = "ignore"
+
+

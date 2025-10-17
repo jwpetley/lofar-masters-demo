@@ -8,7 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
-
+.ipynb_checkpoints
 # Old File
 cutout_2d.py
 
