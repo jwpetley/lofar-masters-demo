@@ -19,5 +19,9 @@ You can run the code by  :
 python week1_spectral_index.py # Cross match catalogues and plot spectral indices
 
 python week1_cutouts.py # Make cutouts of the brightest sources in EDFN
-
 ```
+
+
+The second script will produce an image like this:
+
+![LOFAR Cutouts](./all_cutouts.png)
