@@ -21,6 +21,9 @@ python week1_spectral_index.py # Cross match catalogues and plot spectral indice
 python week1_cutouts.py # Make cutouts of the brightest sources in EDFN
 ```
 
+The first script contains code to do the cross matching - this is very memory and computation heavy and takes around 45 seconds to run on my laptop. If you already have a file called `CATALOGUES/lotss_vlass_nvss_matched.fits` then it will only do spectral index work and runs in ~1 second. You can create that file by running the script or prepare it yourself using topcat. 
+
+The second script is quite fast and produces 20 cutouts in ~3 seconds. You might want to experiment with what slows down or speeds up the script. (Hint: if you remove plotting, it can produce over 350 cutouts a second!)
 
 The second script will produce an image like this:
 

@@ -9,7 +9,7 @@ import numpy as np
 
 
 def open_table(filename, format="fits"):
-    t = Table.read(filename, format = format)
+    t = Table.read(filename, format=format)
     return t
 
 
@@ -96,7 +96,6 @@ if __name__ == "__main__":
         lotss_vlass_nvss.write(
             "CATALOGUES/lotss_vlass_nvss_matched.fits", overwrite=True
         )
-
 
     a_144_1400: np.ndarray = spec_index(
         lotss_vlass_nvss["Total_flux"], lotss_vlass_nvss["S1_4"], 144e6, 1.4e9

@@ -12,7 +12,6 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from astropy.visualization import (
-    ZScaleInterval,
     SqrtStretch,
     ImageNormalize,
     PercentileInterval,
