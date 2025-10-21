@@ -4,7 +4,7 @@ from astropy.nddata import Cutout2D
 from astropy.table import Table
 from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
-import astropy.units as u # type: ignore
+import astropy.units as u  # type: ignore
 from tqdm import tqdm
 from glob import glob
 import os
@@ -20,11 +20,11 @@ from astropy.visualization import (
 from typing import Tuple
 
 
-def open_table(filename, format="fits")->Table:
+def open_table(filename, format="fits") -> Table:
     return Table.read(filename, format=format)
 
 
-def clear_cutouts(path)->None:
+def clear_cutouts(path) -> None:
     fits_files = glob(path + "*.fits")
     png_files = glob(path + "*.png")
 
@@ -35,24 +35,24 @@ def clear_cutouts(path)->None:
         os.remove(f)
 
 
-def sort_table(t, column="Total_flux")->Table:
+def sort_table(t, column="Total_flux") -> Table:
     return t.sort(column, reverse=True)
 
 
-def open_image(filename)->Tuple[np.ndarray, WCS]:
+def open_image(filename) -> Tuple[np.ndarray, WCS]:
     with fits.open(filename) as f:
         data: np.ndarray = f[0].data.squeeze().squeeze()  # Remove extra dimensions
         wcs: WCS = WCS(f[0].header).celestial  # Remove extra dimensions
         return data, wcs
 
 
-def get_skycoord(source, ra_col="RA", dec_col="DEC")->SkyCoord:
+def get_skycoord(source, ra_col="RA", dec_col="DEC") -> SkyCoord:
     ra = source[ra_col]
     dec = source[dec_col]
     return SkyCoord(ra=ra, dec=dec, unit="deg")
 
 
-def process_table(t, img, wcs, n_sources=10)->None:
+def process_table(t, img, wcs, n_sources=10) -> None:
     for source in tqdm(t[:n_sources]):
         c = get_skycoord(source)
         cutout = create_cutout(img, wcs, c)
@@ -60,11 +60,11 @@ def process_table(t, img, wcs, n_sources=10)->None:
         image_cutout(source, cutout)
 
 
-def create_cutout(img, wcs, coord, size=5 * u.arcmin)->Cutout2D:
+def create_cutout(img, wcs, coord, size=5 * u.arcmin) -> Cutout2D:
     return Cutout2D(img, coord, size, wcs)
 
 
-def write_cutout(source, cutout, dir="./CUTOUTS/")->None:
+def write_cutout(source, cutout, dir="./CUTOUTS/") -> None:
     hdu = fits.PrimaryHDU(cutout.data, cutout.wcs.to_header())
     hdul = fits.HDUList([hdu])
     out_name = f"LoTSS_{source['RA']}_{source['DEC']}.fits"
@@ -72,7 +72,7 @@ def write_cutout(source, cutout, dir="./CUTOUTS/")->None:
     hdul.writeto(out_path, overwrite=True)
 
 
-def image_cutout(source, cutout, dir="./CUTOUTS/")->None:
+def image_cutout(source, cutout, dir="./CUTOUTS/") -> None:
     fig, ax = plt.subplots(subplot_kw=dict(projection=cutout.wcs))
     # Prepare the data
     norm = ImageNormalize(
@@ -87,7 +87,7 @@ def image_cutout(source, cutout, dir="./CUTOUTS/")->None:
     plt.close()
 
 
-def image_all_cutouts(t, dir="./CUTOUTS/")->None:
+def image_all_cutouts(t, dir="./CUTOUTS/") -> None:
     cutout_files = glob(dir + "*.fits")
 
     ncol = int(len(cutout_files) / 5)

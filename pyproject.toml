@@ -7,13 +7,18 @@ requires-python = ">=3.12"
 dependencies = [
     "astropy>=7.1.0",
     "matplotlib>=3.10.7",
+    "nbconvert>=7.16.6",
+    "photutils>=2.3.0",
+    "scikit-image>=0.25.2",
     "scipy>=1.16.2",
     "tqdm>=4.67.1",
+    "webencodings>=0.5.1",
 ]
 
 [dependency-groups]
 dev = [
     "ipykernel>=7.0.1",
+    "ruff>=0.14.1",
     "ty>=0.0.1a23",
 ]
 
