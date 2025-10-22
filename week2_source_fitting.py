@@ -176,20 +176,20 @@ def compare_flux_plot(fitted_fluxes, peak_fluxes):
     axs[1].set_xscale("log")
     axs[1].set_yscale("log")
 
-    delta_total = (edfn[0:200]["Total_flux"] - (fitted_fluxes / n_pix_per_beam)) / edfn[
+    delta_total = 100 * (edfn[0:200]["Total_flux"] - (fitted_fluxes / n_pix_per_beam)) / edfn[
         0:200
-    ]["Total_flux"]
+    ]["Total_flux"] 
     axs[2].scatter(edfn[0:200]["Total_flux"], delta_total, s= 2.0)
 
     axs[2].set_xscale("log")
-    #axs[2].set_yscale('symlog')
+    axs[2].set_yscale('symlog')
 
-    delta_peak = (edfn[0:200]["Peak_flux"] - peak_fluxes) / edfn[0:200]["Peak_flux"]
+    delta_peak = 100 * (edfn[0:200]["Peak_flux"] - peak_fluxes) / edfn[0:200]["Peak_flux"]
 
     axs[3].scatter(edfn[0:200]["Peak_flux"], delta_peak, s = 2.0)
 
     axs[3].set_xscale("log")
-    #axs[3].set_yscale("symlog")
+    axs[3].set_yscale("symlog")
 
     plt.tight_layout()
 
@@ -211,7 +211,7 @@ if __name__ == "__main__":
     for source in tqdm(edfn[0:200]):
         tbl = fit_source(source, show_plot=False)
 
-        total_flux = sum_fluxes(tbl, n_sources=1)
+        total_flux = sum_fluxes(tbl, n_sources=3)
         fitted_fluxes.append(total_flux)
         peak_fluxes.append(get_peak_flux(tbl))
 
