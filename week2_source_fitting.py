@@ -176,17 +176,21 @@ def compare_flux_plot(fitted_fluxes, peak_fluxes):
     axs[1].set_xscale("log")
     axs[1].set_yscale("log")
 
-    delta_total = 100 * (edfn[0:200]["Total_flux"] - (fitted_fluxes / n_pix_per_beam)) / edfn[
-        0:200
-    ]["Total_flux"] 
-    axs[2].scatter(edfn[0:200]["Total_flux"], delta_total, s= 2.0)
+    delta_total = (
+        100
+        * (edfn[0:200]["Total_flux"] - (fitted_fluxes / n_pix_per_beam))
+        / edfn[0:200]["Total_flux"]
+    )
+    axs[2].scatter(edfn[0:200]["Total_flux"], delta_total, s=2.0)
 
     axs[2].set_xscale("log")
-    axs[2].set_yscale('symlog')
+    axs[2].set_yscale("symlog")
 
-    delta_peak = 100 * (edfn[0:200]["Peak_flux"] - peak_fluxes) / edfn[0:200]["Peak_flux"]
+    delta_peak = (
+        100 * (edfn[0:200]["Peak_flux"] - peak_fluxes) / edfn[0:200]["Peak_flux"]
+    )
 
-    axs[3].scatter(edfn[0:200]["Peak_flux"], delta_peak, s = 2.0)
+    axs[3].scatter(edfn[0:200]["Peak_flux"], delta_peak, s=2.0)
 
     axs[3].set_xscale("log")
     axs[3].set_yscale("symlog")
