@@ -11,6 +11,7 @@ import os
 from astropy.visualization import (
     SqrtStretch,
     ZScaleInterval,
+    PercentileInterval
 )
 from io import StringIO
 import requests
@@ -42,7 +43,7 @@ def load_image(file):
 
 
 # Function taken from https://outerspace.stsci.edu/spaces/PANSTARRS/pages/298812251/PS1+Image+Cutout+Service#PS1ImageCutoutService-PythonExampleScript
-def getimages(tra, tdec, size=240, filters="grizy", format="fits", imagetypes="stack"):
+def getimages(tra, tdec, size=400, filters="grizy", format="fits", imagetypes="stack"):
     """Query ps1filenames.py service for multiple positions to get a list of images
     This adds a url column to the table to retrieve the cutout.
 
@@ -145,7 +146,7 @@ def make_overlay(source):
     opt_transform = ZScaleInterval()
     radio_transform = ZScaleInterval() + SqrtStretch()
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (10,10))
     ax = plt.subplot(projection=ps1_cutout_wcs)
 
     ax.imshow(opt_transform(ps1_cutout), origin="lower")
@@ -157,27 +158,30 @@ def make_overlay(source):
     ax.contour(
         lotss_cutout,
         transform=ax.get_transform(lotss_cutout_wcs),
-        levels=np.arange(5, 32, 4) * rms,
+        levels=np.array([-16, -8, 8, 16, 32, 64]) * rms,
         colors="white",
     )
 
-    plt.show()
+    plt.savefig(f"./CUTOUTS/opt_rad_{source['RA']}_{source['DEC']}.png")
 
 
 if __name__ == "__main__":
+
     radio_image = "./IMAGES/en1_radio_image.fits"
 
     radio_catalogue = Table.read("CATALOGUES/en1_final_component_catalogue-v1.0.fits")
 
     radio_catalogue.sort("Total_flux", reverse=True)
 
-    radio_catalogue = radio_catalogue[0:10]
+    radio_catalogue = radio_catalogue[0:30]
 
     download_ps1_from_lofar(radio_catalogue)
 
     en1_image, en1_wcs = load_image(radio_image)
 
     for source in tqdm(radio_catalogue):
+        ### I am often getting weird errors in this section so I have a bad try,except procedure
+        ### YOU SHOULD NOT COPY THIS!
         try:
             make_lotss_cutout(source, en1_image, en1_wcs)
             make_overlay(source)
