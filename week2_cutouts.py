@@ -7,9 +7,6 @@ from astropy.table import Table
 import astropy.units as u
 from astropy.nddata import Cutout2D
 from astropy.visualization import (
-    PercentileInterval,
-    SqrtStretch,
-    ZScaleInterval,
     LogStretch,
 )
 import os

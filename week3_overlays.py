@@ -9,10 +9,8 @@ from astropy.nddata import Cutout2D
 from tqdm import tqdm
 import os
 from astropy.visualization import (
-    PercentileInterval,
     SqrtStretch,
     ZScaleInterval,
-    LogStretch,
 )
 from io import StringIO
 import requests
@@ -142,20 +140,24 @@ def make_overlay(source):
 
     print(lotss_cutout, lotss_cutout_wcs)
 
+    print(lotss_cutout.shape)
+
     opt_transform = ZScaleInterval()
     radio_transform = ZScaleInterval() + SqrtStretch()
 
     fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1, projection=ps1_cutout_wcs)
+    ax = plt.subplot(projection=ps1_cutout_wcs)
 
     ax.imshow(opt_transform(ps1_cutout), origin="lower")
 
     ax.set_autoscale_on(False)
 
+    rms = findrms(lotss_cutout)
+
     ax.contour(
-        radio_transform(lotss_cutout),
+        lotss_cutout,
         transform=ax.get_transform(lotss_cutout_wcs),
-        levels=[1, 2, 3, 4, 5, 6],
+        levels=np.arange(5, 32, 4) * rms,
         colors="white",
     )
 
@@ -167,14 +169,17 @@ if __name__ == "__main__":
 
     radio_catalogue = Table.read("CATALOGUES/en1_final_component_catalogue-v1.0.fits")
 
-    radio_catalogue.sort("Peak_flux", reverse=True)
+    radio_catalogue.sort("Total_flux", reverse=True)
 
     radio_catalogue = radio_catalogue[0:10]
 
-    # download_ps1_from_lofar(radio_catalogue)
+    download_ps1_from_lofar(radio_catalogue)
 
     en1_image, en1_wcs = load_image(radio_image)
 
-    for source in tqdm(radio_catalogue[3:]):
-        make_lotss_cutout(source, en1_image, en1_wcs)
-        make_overlay(source)
+    for source in tqdm(radio_catalogue):
+        try:
+            make_lotss_cutout(source, en1_image, en1_wcs)
+            make_overlay(source)
+        except:
+            pass

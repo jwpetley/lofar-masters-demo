@@ -2,26 +2,20 @@ from astropy.io import fits
 from astropy.wcs import WCS
 from astropy.table import Table
 from tqdm import tqdm
-from astropy.visualization import ZScaleInterval, PercentileInterval, SqrtStretch
+from astropy.visualization import ZScaleInterval, SqrtStretch
 import matplotlib.pyplot as plt
 from astropy.coordinates import SkyCoord
-import astropy.units as u
 
 from photutils.background import (
     Background2D,
     MedianBackground,
-    LocalBackground,
-    MMMBackground,
 )
 from astropy.convolution import convolve
 from photutils.segmentation import (
-    detect_sources,
-    deblend_sources,
     SourceFinder,
     SourceCatalog,
     make_2dgaussian_kernel,
 )
-from photutils.psf import IterativePSFPhotometry, SourceGrouper, GaussianPSF
 import numpy as np
 
 
